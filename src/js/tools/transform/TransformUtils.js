@@ -6,14 +6,48 @@
     HORIZONTAL : 'HORIZONTAL',
     flip : function (frame, axis) {
       var clone = frame.clone();
-      var w = frame.getWidth();
-      var h = frame.getHeight();
+      var rightFlipBoundary;
+      var topFlipBoundary;
+      var selection = pskl.app.selectionManager.currentSelection;
+      var selectionIsRectangle = false;
+      var minx = +Infinity;
+      var miny = +Infinity;
+      var maxx = 0;
+      var maxy = 0;
+      if (selection) {
+        var px = selection.pixels;
+        if (px) {
+          for (var i = 0; i < px.length; ++i) {
+            var pixel = px[i];
+            minx = Math.min(minx, pixel.col);
+            miny = Math.min(miny, pixel.row);
+            maxx = Math.max(maxx, pixel.col);
+            maxy = Math.max(maxy, pixel.row);
+          }
+        }
+        var boundingRectArea = (maxx - minx + 1) * (maxy - miny + 1);
+        selectionIsRectangle = (boundingRectArea == px.length) && (px.length != 0);
+        topFlipBoundary = maxy;
+        rightFlipBoundary = maxx;
+      }
+      if (selectionIsRectangle) {
+        topFlipBoundary = miny + maxy + 1;
+        rightFlipBoundary = minx + maxx + 1;
+      } else {
+        topFlipBoundary = frame.getHeight();
+        rightFlipBoundary = frame.getWidth();
+      }
 
       clone.forEachPixel(function (color, x, y) {
+        if (selectionIsRectangle) {
+          if (((x < minx) || (x > maxx)) || ((y < miny) || (y > maxy))) {
+            return;
+          }
+        }
         if (axis === ns.TransformUtils.VERTICAL) {
-          x = w - x - 1;
+          x = rightFlipBoundary - x - 1;
         } else if (axis === ns.TransformUtils.HORIZONTAL) {
-          y = h - y - 1;
+          y = topFlipBoundary - y - 1;
         }
         frame.setPixel(x, y, color);
       });

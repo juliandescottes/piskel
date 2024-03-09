@@ -17,6 +17,16 @@ describe("TransformUtils suite", function() {
   /************ FLIP *************/
   /*******************************/
 
+
+  var selectionManager = new pskl.selection.SelectionManager();
+  selectionManager.init();
+
+  selection = new pskl.selection.BaseSelection();
+  selection.pixels = [];
+
+  selectionManager.currentSelection = selection;
+  pskl.app.selectionManager = selectionManager;
+
   it("flips a frame vertically", function () {
     // create frame
     var frame = pskl.model.Frame.fromPixelGrid(toFrameGrid([
@@ -24,6 +34,7 @@ describe("TransformUtils suite", function() {
       [O, B]
     ]));
 
+    selectionManager.currentSelection = selection;
     // should have flipped
     pskl.tools.transform.TransformUtils.flip(frame, VERTICAL);
     frameEqualsGrid(frame, [
@@ -55,6 +66,64 @@ describe("TransformUtils suite", function() {
       [A, O]
     ]));
 
+    // should have flipped
+    pskl.tools.transform.TransformUtils.flip(frame, VERTICAL);
+    frameEqualsGrid(frame, [
+      [O, A],
+      [O, A],
+      [O, A]
+    ]);
+
+    // should be the same
+    pskl.tools.transform.TransformUtils.flip(frame, HORIZONTAL);
+    frameEqualsGrid(frame, [
+      [O, A],
+      [O, A],
+      [O, A]
+    ]);
+  });
+
+
+  var createPixel = function(row, col, color) {
+    return {
+      row : row,
+      col : col,
+      color : color
+    };
+  };
+
+  it("flips selection", function () {
+    // create frame
+    var frame = pskl.model.Frame.fromPixelGrid(toFrameGrid([
+      [A, O, B],
+      [O, O, B],
+      [O, O, B]
+    ]));
+    // Select top left 2x2 square
+    selection.pixels.push(createPixel(0, 0));
+    selection.pixels.push(createPixel(1, 0));
+    selection.pixels.push(createPixel(0, 1));
+    selection.pixels.push(createPixel(1, 1));
+    // should be the same
+    pskl.tools.transform.TransformUtils.flip(frame, VERTICAL);
+    frameEqualsGrid(frame, [
+      [O, A, B],
+      [O, O, B],
+      [O, O, B]
+    ]);
+  })
+
+  it("flips normally for nonrectangular selection", function () {
+    // create frame
+    var frame = pskl.model.Frame.fromPixelGrid(toFrameGrid([
+      [A, O],
+      [A, O],
+      [A, O]
+    ]));
+
+    selection.pixels.push(createPixel(0, 0));
+    selection.pixels.push(createPixel(1, 0));
+    selection.pixels.push(createPixel(0, 1));
     // should have flipped
     pskl.tools.transform.TransformUtils.flip(frame, VERTICAL);
     frameEqualsGrid(frame, [

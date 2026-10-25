@@ -21,6 +21,59 @@ TODO: how new and migrated code is written (imports, classes, types,
 naming, no new globals). Once written, these take precedence over legacy
 patterns found in the code.
 
+## Harness
+
+See [modernization-harness.md](modernization-harness.md).
+
+## Rules for migration work
+
+- **No behavior change in a migration PR.** Bugs found along the way are
+  logged (issue, or the spec's "Known issues"), not fixed in the same PR.
+- **Close test gaps before migrating an area.** Each
+  [spec](../specs/README.md) lists untested behavior under "Test gaps". Fill the
+  gaps relevant to the area first, in a separate PR, against the old code.
+- **Preserve the public contracts** listed in
+  [architecture.md](../architecture.md#public-contracts).
+- **Mechanical first.** Conversions are done by a deterministic codemod
+  where possible. Agents handle what the tool flags as unsupported, and fix
+  the tool rather than hand-patching its output, so a re-run reproduces the
+  result.
+- **Tool output is not evidence of correctness.** "All files converted, no
+  errors" says nothing about whether the result is right. Every converted
+  file is reviewed in the diff, and the oracles must pass.
+- **Small units.** One directory (or one tightly coupled group of files) per
+  PR, in dependency order: leaves first.
+- **Report honestly.** If a check could not run, the change is not done;
+  say so rather than presenting partial verification as a pass.
+
+## Workflow (per unit)
+
+1. Pick the next unit from the [status table](#status), in dependency
+   order.
+2. Close that area's spec gaps with e2e tests against the current code
+   (separate PR, merged first).
+3. Run the codemod on the unit; review its output.
+4. Resolve whatever the codemod flagged, fixing the codemod when the issue
+   is general.
+5. Run `npm run verify:migration` until it passes.
+6. Have the reviewer agent review the diff; address its findings.
+7. Update the status table and any docs or specs whose code pointers
+   changed.
+8. Open a PR for maintainer review.
+
+## Definition of done (per unit)
+
+- `npm run verify:migration` passes:
+  - lint and build clean;
+  - unit tests pass;
+  - full e2e suite green with zero retries;
+  - namespace snapshot identical to baseline (unless the step intentionally
+    changes it, and the expected diff is stated in the PR);
+  - golden outputs identical to baseline.
+- Every file flagged by the codemod has been resolved and reviewed.
+- The reviewer agent's findings are addressed or explicitly answered.
+- The status table is updated; docs and specs are updated where affected.
+
 ## Test API
 
 The e2e suite reads app state through the `window.pskl` globals, which the

@@ -34,7 +34,8 @@ inside piskelapp.com (embedding).
 - `desktop-and-cli.partials` The build generates HTML partials for
   piskelapp.com.
 - `desktop-and-cli.external-piskel` A host page can load a sprite at
-  startup (`window._externalPiskel` + `Events.EXTERNAL_PISKEL_READY`).
+  startup (`window._externalPiskel` + `Events.EXTERNAL_PISKEL_READY`). See
+  [architecture.md](../architecture.md#embedding).
 - `desktop-and-cli.ready-callbacks` A host page can run code once the
   editor is ready (`window.piskelReadyCallbacks`).
 - `desktop-and-cli.release` `npm run release` and

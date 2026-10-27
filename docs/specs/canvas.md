@@ -76,4 +76,5 @@ The drawing area in the center column. Shortcuts: `+`, `-`, `0`,
 
 ## Known issues
 
-- `should show drag origin during rectangle selection` is flaky.
+- `should show drag origin during rectangle selection` is flaky; see
+  [testing.md](../testing.md#flaky-tests).

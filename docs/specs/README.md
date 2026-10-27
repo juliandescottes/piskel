@@ -7,13 +7,14 @@ reviewing a change, or writing a test.
 - A change that alters user-facing behavior updates the matching spec in
   the same commit.
 - A spec describes behavior, not implementation. It doesn't point to
-  code.
+  code: [architecture.md](../architecture.md) maps concepts to code.
 - If code and spec disagree, figure out which one is wrong. Don't silently
   "fix" either one: if unsure, ask.
 - Every claim has an id, and tests reference the ids they verify (see
   [Claim ids](#claim-ids)).
 - The e2e tests for `<spec>.md` live in
-  `tests/e2e/playwright/integration/<spec>/`.
+  `tests/e2e/playwright/integration/<spec>/` (see
+  [testing.md](../testing.md#where-to-put-it)).
 
 ## Index
 

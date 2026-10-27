@@ -35,8 +35,9 @@ closed tabs, and never lose changes silently.
 ### Save as `.piskel` file
 
 - `save-and-storage.piskel-file` **Save as .piskel** downloads the sprite
-  as a `.piskel` file (JSON), which can be loaded back from the Import
-  drawer or by drag and drop with identical content.
+  as a `.piskel` file (JSON, see
+  [architecture.md](../architecture.md#persistence)), which can be loaded
+  back from the Import drawer or by drag and drop with identical content.
 - `save-and-storage.piskel-compat` Files saved by any older version of
   Piskel must keep loading.
 

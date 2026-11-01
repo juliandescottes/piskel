@@ -7,13 +7,14 @@ reviewing a change, or writing a test.
 - A change that alters user-facing behavior updates the matching spec in
   the same commit.
 - A spec describes behavior, not implementation. It doesn't point to
-  code.
+  code: [architecture.md](../architecture.md) maps concepts to code.
 - If code and spec disagree, figure out which one is wrong. Don't silently
   "fix" either one: if unsure, ask.
 - Every claim has an id, and tests reference the ids they verify (see
   [Claim ids](#claim-ids)).
 - The e2e tests for `<spec>.md` live in
-  `tests/e2e/playwright/integration/<spec>/`.
+  `tests/e2e/playwright/integration/<spec>/` (see
+  [testing.md](../testing.md#where-to-put-it)).
 
 ## Index
 
@@ -66,6 +67,7 @@ with an id in inline code:
 - `npm run spec-check` fails on duplicate ids, ids that don't match their
   file, and tags referencing unknown ids. It lists the claims no test
   references: these are the test gaps, so specs don't list them by hand.
+  See [Finding test gaps](../testing.md#finding-test-gaps).
 - Known gaps are recorded in [untested.txt](untested.txt), and that list
   may only shrink. `spec-check` fails on a new gap (a claim with no test
   that isn't listed) and on a listed claim that is now tested or no longer
@@ -102,7 +104,7 @@ Where the feature lives in the UI, and its default shortcuts.
 
 - Specs cover the editor as users see it. Build tooling, embedding
   hooks, storage keys and file-format compatibility are described in
-  the architecture docs instead.
+  [architecture.md](../architecture.md) instead.
 - Known bugs and oddities go in [known-issues.md](../known-issues.md),
   not in specs.
 - The NW.js desktop app is not specified: it is planned for removal.

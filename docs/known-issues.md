@@ -15,7 +15,8 @@ link the issue.
 
 See [canvas.md](specs/canvas.md).
 
-- `should show drag origin during rectangle selection` is flaky.
+- `should show drag origin during rectangle selection` is flaky; see
+  [testing.md](testing.md#flaky-tests).
 - Touch listeners are attached to the window, not the canvas, so a tap
   anywhere (for example on a toolbar button) runs the current tool's
   press and release. Not reproduced.
